@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sizzle &amp; Serve — Diner Cooking Game</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #2b1a0e; height: 100%; }
+  body { display: flex; align-items: center; justify-content: center;
+    font-family: "Trebuchet MS", sans-serif; }
+  #wrap { width: min(1280px, 100vw); }
+  canvas { display: block; width: 100%; height: auto; background: #f3e2c7;
+    image-rendering: auto; cursor: pointer; }
+  #help { color: #ffd9a0; text-align: center; font-size: 13px; padding: 8px 12px 12px; }
+  #help b { color: #fff; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="game" width="1280" height="800"></canvas>
+  <div id="help"><b>Sizzle &amp; Serve</b> — Move <b>WASD / arrows</b>, use a station with
+  <b>E</b> or a <b>click</b>. Grab ingredients from the bins, chop the veg, grill the
+  patty, fry the fries, build the dish on the plating counter, serve it at the
+  window before patience runs out. <b>R</b> restarts, <b>M</b> mutes.</div>
+</div>
+<script src="src/config.js"></script>
+<script src="src/input.js"></script>
+<script src="src/state.js"></script>
+<script src="src/audio.js"></script>
+<script src="src/world.js"></script>
+<script src="src/render.js"></script>
+<script src="src/shots.js"></script>
+<script>
+  // main loop — the only inline script; it wires the modules together.
+  (function () {
+    'use strict';
+    var S = window.SizzleState.state;
+    var last = performance.now();
+    var shot = window.SizzleShots.apply();
+    function frame(now) {
+      var dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+      if (window.SizzleInput.mutePressed) window.SizzleAudio.toggleMute();
+      if (!window.SizzleShots.isFrozen()) window.SizzleWorld.update(dt);
+      else if (S.phase === 'title' && window.SizzleInput.interact) window.SizzleWorld.update(dt);
+      window.SizzleRender.draw();
+      window.SizzleInput.endFrame();
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  })();
+</script>
+</body>
+</html>
