@@ -128,8 +128,8 @@
           R.foodIcon(it, st.x + 62 + i * 36, st.y + 82, 15);
         });
         var rec = SS.recipeForPlate(S.plate);
-        ctx.fillStyle = rec ? '#2e7d32' : '#6d4c41'; ctx.font = 'bold 14px Trebuchet MS, sans-serif';
-        ctx.fillText(rec ? '✓ ' + rec.name.toUpperCase() + ' — SERVE IT!' : 'Plate: ' + S.plate.length + ' item(s)',
+        ctx.fillStyle = rec ? '#2e7d32' : '#6d4c41'; ctx.font = 'bold 12px Trebuchet MS, sans-serif';
+        ctx.fillText(rec ? '✓ ' + rec.name.toUpperCase() + ' — SERVE!' : 'Plate: ' + S.plate.length + ' item(s)',
           st.x + st.w / 2, st.y + st.h - 12);
       }
       if (st.kind === 'serve') {
